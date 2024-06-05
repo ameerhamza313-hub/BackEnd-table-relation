@@ -5,18 +5,18 @@ import ProductModel from "../../models/products/index.js";
 const SalesController = {
   getAll: async (req, res) => {
     try {
-      const sales = await SalesModel.findAll({include:
-[
-  {
-    model: SaleProductModel,
-    include: [
-      {
-        model: ProductModel,
-        attributes: ["name"],
-      },
-    ],
-  }
-]
+      const sales = await SalesModel.findAll({
+        include: [
+          {
+            model: SaleProductModel,
+            include: [
+              {
+                model: ProductModel,
+                attributes: ["name"],
+              },
+            ],
+          },
+        ],
       });
       res.json({ data: sales });
     } catch (error) {
@@ -100,6 +100,8 @@ const SalesController = {
           ...ele,
           SaleId: sale.id,
         });
+        product.stock -= ele.productQuantity;
+        await product.save();
       }
 
       console.log("sales products", salesProduct);

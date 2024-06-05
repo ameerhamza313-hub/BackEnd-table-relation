@@ -36,6 +36,7 @@ const authController = {
           email: payload.email,
         },
       });
+      
       if (!userCheck) {
         res.status(401).json({ message: "invalid credentials" });
       };
